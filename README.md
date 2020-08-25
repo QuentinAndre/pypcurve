@@ -11,8 +11,9 @@ You can install pypcurve with pip:
 
 ## 1. Compulsory Reading
 
-First and foremost, [read the user guide to the p-curve](http://p-curve.com/guide.pdf). Very important not to make
-mistakes when selecting statistical results, and preparing the disclosure table. 
+First and foremost, [read the user guide to the p-curve](http://p-curve.com/guide.pdf). It is crucial that users 
+understand what p-curve can and cannot do, that they know which statistical results to select, and that they properly
+ prepare the disclosure table. 
 
 ## 2. Formatting the statistical results
 
@@ -25,7 +26,7 @@ pypcurve accepts the following formats of statistical tests:
 * chi2(1)=7.1
 
 In addition, pypcurve will accept raw p-values:
-* p = .XXXX
+* p = .0023
 
 This is not recommended though: p-values are often weirdly
 rounded, so enter the statistical test instead if you have it
