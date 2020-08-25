@@ -4,6 +4,6 @@ Core module for pypcurve
 """
 from .pypcurve import PCurve
 
-__all__ = ["PyPCurve"]
+__all__ = ["PCurve"]
 
-__version__ = "0.0.1"
+__version__ = PCurve.__version__

@@ -1,27 +1,25 @@
-from typing import Union, Iterable, Dict, List, Any, Set, Tuple, Optional, NoReturn, Pattern
+from typing import Union, Iterable, Dict, List, Any, Set, Tuple, Optional, NoReturn, Pattern, Callable
 from matplotlib.pyplot import Axes
 from pandas.core.frame import DataFrame
 from numpy import array
 
 
-def adjust_spines(ax, spines):
-    ax: Axes
-    spines: List[str]
-
+def adjust_spines(ax: Axes, spines: List[str]) -> None: ...
 
 class PCurve(object):
-    REGEX_STAT_TEST: Pattern
+    __version__: str
+    __pcurve_app_version__: str
 
-    POWER_LEVELS = List[float]
+    _REGEX_STAT_TEST: Pattern
+    _POWER_LEVELS: List[float]
 
-    _cached_chi_ncp_ests = Dict[str, float]
-
-    _sig_chi_tests = List[List[float]]
-    _sig_f_tests = List[List[float]]
-    df_tests = DataFrame
-    n_tests = Dict[str, float]
-    stouffer_p = Dict[str, float]
-    stouffer_z = Dict[str, float]
+    _sig_chi_tests: List[List[float]]
+    _sig_f_tests: List[List[float]]
+    _df_results: DataFrame
+    _n_tests: Dict[str, int]
+    _stouffer_p: Dict[str, float]
+    _stouffer_z: Dict[str, float]
+    _z_at_power: array
 
     # Static Methods
     @staticmethod
@@ -39,19 +37,15 @@ class PCurve(object):
     @staticmethod
     def _compute_stouffer_z(pp: array) -> float: ...
 
-    def _solve_ncp_f(self, df1: float, df2: float, power: float) -> float: ...
+    @staticmethod
+    def _compute_ncp_f(df1: array, df2: array, power: float) -> array: ...
 
-    def _solve_ncp_chi(self, df: float, power: float, use_cache: bool) -> float: ...
-
-    def _solve_ncp(self, family: str, df1: float, df2: float, power: float) -> float: ...
-
-    def _compute_ncp_f(self, df1: array, df2: array, power:float) -> array: ...
-
-    def _compute_ncp_chi(self, df1: array, power:float, use_cache:bool) -> array: ...
+    @staticmethod
+    def _compute_ncp_chi(df: array, power: float) -> array: ...
 
     def _compute_ncp_all(self, power: float) -> array: ...
 
-    def _parse_test(self, test_str: str) -> Tuple[str, str, float, float, float]: ...
+    def _parse_result(self, test_str: str) -> Tuple[str, str, float, float, float]: ...
 
     def _compute_pvals(self) -> array: ...
 
@@ -67,8 +61,26 @@ class PCurve(object):
 
     def _run_binom_test(self, alternative: str) -> float: ...
 
+    def __init__(self, test_arr: Union[array, List[str]]) -> None: ...
+
     @property
     def has_evidential_value(self) -> bool: ...
+
     @property
     def has_inadequate_evidence(self) -> bool: ...
-    def estimate_power(self) -> Tuple[float, float, float]: ...
+
+    def estimate_power(self) -> Tuple[float, Tuple[float, float]]: ...
+
+    def get_binomial_tests(self) -> Dict[str, float]: ...
+
+    def get_stouffer_tests(self) -> Dict[str, Dict[str, float]]: ...
+
+    def get_results_entered(self) -> DataFrame: ...
+
+    def pcurve_analysis_summary(self) -> DataFrame: ...
+
+    def summary(self) -> None: ...
+
+    def plot_power_estimate(self, dpi: Optional[Union[int, float]]) -> Axes: ...
+
+    def plot_pcurve(self, dpi: Optional[Union[int, float]]) -> Axes: ...
