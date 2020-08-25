@@ -28,8 +28,8 @@ pypcurve accepts the following formats of statistical tests:
 In addition, pypcurve will accept raw p-values:
 * p = .0023
 
-This is not recommended though: p-values are often weirdly
-rounded, so enter the statistical test instead if you have it
+This is not recommended though: p-values are often weirdly rounded, so enter the statistical result instead if 
+ it is reported in the paper.
 
 ## 3. Using pypcurve
 
@@ -56,8 +56,8 @@ pc.summary()
 ````
 
 This will output the p-curve plot, as well as the table summarizing the binomial and Stouffer tests of the 
-p-curve analysis. You can get the plot alone (or the table alone) using the methods `pc.plot_pcurve` 
-(`pc.pcurve_analysis_summary()`)
+p-curve analysis. You can get the plot alone, or the table alone, using the methods `pc.plot_pcurve()` and 
+`pc.pcurve_analysis_summary()`.
 
 ### C. Power Estimation
 
