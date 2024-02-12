@@ -39,7 +39,7 @@ def adjust_spines(ax, spines):
 
 # noinspection PyProtectedMember,PyProtectedMember,PyProtectedMember,PyProtectedMember,PyProtectedMember,PyProtectedMember,PyProtectedMember,PyProtectedMember
 class PCurve(object):
-    __version__ = "0.1.0"
+    __version__ = "0.1.1"
 
     __pcurve_app_version__ = "4.06"
 
@@ -229,7 +229,7 @@ class PCurve(object):
     def _solve_power_for_pct(self, pct):
         z = norm._ppf(pct)
         error = lambda est: self._compute_stouffer_z_at_power(est) - z
-        return opt.brentq(error, .0501, .9999)
+        return opt.brentq(error, .05, .999999)
 
     def _compute_ppvals_null(self, pcurvetype="full"):
         """
@@ -406,7 +406,12 @@ class PCurve(object):
         Estimate the power of the tests entered in the-pcurve, correcting for publication bias.
         :return: p, lbp, ubp: The power, and (lower bound, upper bound) of the 95% CI for power.
         """
-        p = self._solve_power_for_pct(.50)
+        try:
+            p = self._solve_power_for_pct(.50)
+        except:
+            # If the power of the tests is exactly 5%, the power estimation will fail. In this case, we will use the
+            # default power of 5%.
+            p = .05
         p05 = norm._cdf(self._compute_stouffer_z_at_power(.051))
         p99 = norm._cdf(self._compute_stouffer_z_at_power(.99))
         if p05 <= .95:
@@ -426,7 +431,7 @@ class PCurve(object):
 
     def pcurve_analysis_summary(self):
         """
-        Print the summary of the p-curve analysis: The binomial tests, continuous tests of full p-curve, and continous
+        Print the summary of the p-curve analysis: The binomial tests, continuous tests of full p-curve, and continuous
         tests of half p-curve against the flat p-curve/the p-curve of 33% power.
         :return: A DataFrame containing the results.
         """
